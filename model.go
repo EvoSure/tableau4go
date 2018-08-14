@@ -44,6 +44,16 @@ func NewAPI(server string, version string, boundary string, defaultSiteName stri
 	return API{Server: fixedUpServer, Version: version, Boundary: boundary, DefaultSiteName: defaultSiteName, OmitDefaultSiteName: omitDefaultSiteName}
 }
 
+type View struct {
+	ID         string `json:"id,omitempty" xml:"id,attr,omitempty"`
+	Name       string `json:"name,omitempty" xml:"name,attr,omitempty"`
+	ContentUrl string `json:"contentUrl,omitempty" xml:"contentUrl,attr,omitempty"`
+}
+
+type Views struct {
+	Views []View `json:"view,omitempty" xml:"view,omitempty"`
+}
+
 type Project struct {
 	ID          string `json:"id,omitempty" xml:"id,attr,omitempty"`
 	Name        string `json:"name,omitempty" xml:"name,attr,omitempty"`
@@ -136,6 +146,10 @@ type ServerInfo struct {
 	RestApiVersion string `json:"restApiVersion,omitempty" xml:"restApiVersion,omitempty"`
 }
 
+type QueryViewsResponse struct {
+	Views Views `json:"views,omitempty" xml:"views,omitempty"`
+}
+
 type QueryProjectsResponse struct {
 	Projects Projects `json:"projects,omitempty" xml:"projects,omitempty"`
 }
@@ -149,8 +163,8 @@ type Credentials struct {
 }
 
 type User struct {
-	ID string `json:"id,omitempty" xml:"id,attr,omitempty"`
-	Name string `json:"name,omitempty" xml:"name,attr,omitempty"`
+	ID       string `json:"id,omitempty" xml:"id,attr,omitempty"`
+	Name     string `json:"name,omitempty" xml:"name,attr,omitempty"`
 	SiteRole string `json:"siteRole,omitempty" xml:"siteRole,attr,omitempty"`
 	FullName string `json:"fullName,omitempty" xml:"fullName,attr,omitempty"`
 }
