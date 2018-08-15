@@ -47,11 +47,21 @@ func NewAPI(server string, version string, boundary string, defaultSiteName stri
 type View struct {
 	ID         string `json:"id,omitempty" xml:"id,attr,omitempty"`
 	Name       string `json:"name,omitempty" xml:"name,attr,omitempty"`
-	ContentUrl string `json:"contentUrl,omitempty" xml:"contentUrl,attr,omitempty"`
+	ContentURL string `json:"contentUrl,omitempty" xml:"contentUrl,attr,omitempty"`
 }
 
 type Views struct {
 	Views []View `json:"view,omitempty" xml:"view,omitempty"`
+}
+
+type Workbook struct {
+	ID         string `json:"id,omitempty" xml:"id,attr,omitempty"`
+	Name       string `json:"name,omitempty" xml:"name,attr,omitempty"`
+	ContentURL string `json:"contentUrl,omitempty" xml:"contentUrl,attr,omitempty"`
+}
+
+type Workbooks struct {
+	Workbooks []Workbook `json:"workbook,omitempty" xml:"workbook,omitempty"`
 }
 
 type Project struct {
@@ -167,6 +177,10 @@ type User struct {
 	Name     string `json:"name,omitempty" xml:"name,attr,omitempty"`
 	SiteRole string `json:"siteRole,omitempty" xml:"siteRole,attr,omitempty"`
 	FullName string `json:"fullName,omitempty" xml:"fullName,attr,omitempty"`
+}
+
+type QueryWorkbooksResponse struct {
+	Workbooks Workbooks `json:"workbooks,omitempty" xml:"workbooks,omitempty"`
 }
 
 type QuerySitesResponse struct {

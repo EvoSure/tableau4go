@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -167,8 +168,12 @@ func (api *API) QueryViews(siteID string) ([]View, error) {
 }
 
 // QueryWorkbookViews returns views for the given workbook
-func (api *API) QueryWorkbookViews(siteID, workbookID string) ([]View, error) {
-	url := fmt.Sprintf("%s/api/%s/sites/%s/workbooks/%s/views", api.Server, api.Version, siteID, workbookID)
+func (api *API) QueryWorkbookViews(siteID, workbookID string, values url.Values) ([]View, error) {
+	params := values.Encode()
+	if params != "" {
+		params = "?" + params
+	}
+	url := fmt.Sprintf("%s/api/%s/sites/%s/workbooks/%s/views%s", api.Server, api.Version, siteID, workbookID, params)
 	headers := make(map[string]string)
 	retval := QueryViewsResponse{}
 	err := api.makeRequest(url, GET, nil, &retval, headers, connectTimeOut, readWriteTimeout, "")
@@ -183,6 +188,19 @@ func (api *API) QueryViewData(siteID, viewID string) (csv.Reader, error) {
 	retVal := csv.Reader{}
 	err := api.makeRequest(url, GET, nil, &retVal, headers, 60*time.Second, 60*time.Second, "csv")
 	return retVal, err
+}
+
+// QueryWorkbooks returns workbooks for the given workbook
+func (api *API) QueryWorkbooks(siteID string, values url.Values) ([]Workbook, error) {
+	params := values.Encode()
+	if params != "" {
+		params = "?" + params
+	}
+	url := fmt.Sprintf("%s/api/%s/sites/%s/workbooks%s", api.Server, api.Version, siteID, params)
+	headers := make(map[string]string)
+	retval := QueryWorkbooksResponse{}
+	err := api.makeRequest(url, GET, nil, &retval, headers, connectTimeOut, readWriteTimeout, "")
+	return retval.Workbooks.Workbooks, err
 }
 
 // GetProjectByName returns project by the given name
