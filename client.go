@@ -35,6 +35,9 @@ const DELETE = "DELETE"
 
 var ErrDoesNotExist = errors.New("Does Not Exist")
 
+// Debug api interactions. Set to try to enable debugging.
+var Debug = false
+
 // Signin signs in using the given username, password and contentURL
 //http://onlinehelp.tableau.com/current/api/rest_api/en-us/help.htm#REST/rest_api_ref.htm#Sign_In%3FTocPath%3DAPI%2520Reference%7C_____51
 func (api *API) Signin(username, password string, contentURL string, userIDToImpersonate string) error {
@@ -345,8 +348,7 @@ func (api *API) delete(url string) error {
 // makeRequest calls the REST api with the given url, method and payload. The
 // format param when not blank will deserialize for that format, defaulting to XML.
 func (api *API) makeRequest(requestURL string, method string, payload []byte, result interface{}, headers map[string]string, cTimeout time.Duration, rwTimeout time.Duration, format string) error {
-	var debug = false
-	if debug {
+	if Debug {
 		fmt.Printf("%s:%v\n", method, requestURL)
 		if payload != nil {
 			fmt.Printf("%v\n", string(payload))
@@ -374,7 +376,7 @@ func (api *API) makeRequest(requestURL string, method string, payload []byte, re
 		}
 	}
 	if len(api.AuthToken) > 0 {
-		if debug {
+		if Debug {
 			fmt.Printf("%s:%s\n", auth_header, api.AuthToken)
 		}
 		req.Header.Add(auth_header, api.AuthToken)
@@ -386,7 +388,7 @@ func (api *API) makeRequest(requestURL string, method string, payload []byte, re
 	}
 	defer resp.Body.Close()
 	body, readBodyError := ioutil.ReadAll(resp.Body)
-	if debug {
+	if Debug {
 		fmt.Printf("t4g Response:%v\n", string(body))
 	}
 	if readBodyError != nil {
