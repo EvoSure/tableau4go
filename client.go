@@ -184,13 +184,13 @@ func (api *API) QueryWorkbookViews(siteID, workbookID string, values url.Values)
 }
 
 // QueryViewData returns csv data for the view
-func (api *API) QueryViewData(siteID, viewID string) (csv.Reader, error) {
+func (api *API) QueryViewData(siteID, viewID string) (*csv.Reader, error) {
 	url := fmt.Sprintf("%s/api/%s/sites/%s/views/%s/data", api.Server, api.Version, siteID, viewID)
 	headers := make(map[string]string)
 	// retVal := []byte{}
 	retVal := csv.Reader{}
 	err := api.makeRequest(url, GET, nil, &retVal, headers, 60*time.Second, 60*time.Second, "csv")
-	return retVal, err
+	return &retVal, err
 }
 
 // QueryWorkbooks returns workbooks for the given workbook
